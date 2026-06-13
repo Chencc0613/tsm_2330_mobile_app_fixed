@@ -140,6 +140,25 @@ def to_jsonable(obj: Any) -> Any:
     return obj
 
 
+
+DEFAULT_FORECAST_RULES = {
+    "ENABLE": True,
+    "YEARS": 5,
+    "EPS_SOURCE": "FORWARD",
+    "FALLBACK_GROWTH": 0.12,
+    "MIN_GROWTH": 0.03,
+    "MAX_GROWTH": 0.45,
+    "INTEGRATED_WEIGHTS": {"current_pe": 0.25, "peg_pe": 0.55, "manual_pe": 0.20},
+    "SCENARIOS": {
+        "BEAR": {"label": "悲觀", "growth_mult": 0.70, "peg": 0.60, "manual_pe": 16.0, "color": "#c62828"},
+        "BASE": {"label": "基準", "growth_mult": 1.00, "peg": 0.80, "manual_pe": 22.0, "color": "#1565c0"},
+        "BULL": {"label": "樂觀", "growth_mult": 1.20, "peg": 1.10, "manual_pe": 30.0, "color": "#2e7d32"},
+    },
+}
+
+if not hasattr(core, "FORECAST_RULES"):
+    core.FORECAST_RULES = DEFAULT_FORECAST_RULES.copy()
+
 # -----------------------------
 # Core adapter
 # -----------------------------
@@ -170,6 +189,8 @@ def apply_config(cfg: Dict[str, Any]) -> None:
     core.RISK_RULES["PE_HARD_BLOCK_ENABLE"] = cfg["pe_hard_block"]
     core.RISK_RULES["PEG_HARD_BLOCK_ENABLE"] = cfg["peg_hard_block"]
 
+    if not hasattr(core, "FORECAST_RULES") or core.FORECAST_RULES is None:
+        core.FORECAST_RULES = DEFAULT_FORECAST_RULES.copy()
     core.FORECAST_RULES["YEARS"] = cfg["forecast_years"]
     core.FORECAST_RULES["EPS_SOURCE"] = cfg["forecast_eps_source"]
 
@@ -237,11 +258,14 @@ def compute_mobile_system(cfg_hashable: tuple) -> Dict[str, Any]:
     )
 
     try:
-        forecast_pack = core.compute_tsm_future_price_forecast(
-            current_price=tsm_risk["last_price"],
-            ticker=core.CORE_TICKER,
-            forecast_rules=core.FORECAST_RULES,
-        )
+        if hasattr(core, "compute_tsm_future_price_forecast"):
+            forecast_pack = core.compute_tsm_future_price_forecast(
+                current_price=tsm_risk["last_price"],
+                ticker=core.CORE_TICKER,
+                forecast_rules=core.FORECAST_RULES,
+            )
+        else:
+            forecast_pack = {"error": "Forecast module is missing in tsm_core.py. Main BUY/HOLD system still works.", "forecast_df": pd.DataFrame()}
     except Exception as e:
         forecast_pack = {"error": str(e), "forecast_df": pd.DataFrame()}
 
