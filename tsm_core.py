@@ -2639,7 +2639,15 @@ def run_system():
 
 import numpy as np
 import pandas as pd
-from IPython.display import display, HTML
+# Forecast UI helpers are optional. Streamlit does not need IPython.
+try:
+    from IPython.display import display as _ipython_display, HTML as _ipython_HTML
+    if display is None:
+        display = _ipython_display
+    if HTML is None:
+        HTML = _ipython_HTML
+except Exception:
+    pass
 
 # ============================================================
 # 1) FORECAST CONFIG
@@ -3120,11 +3128,15 @@ def forecast_raw_dataframe(pack):
 def run_tsm_future_price_forecast(current_price=None):
     pack = compute_tsm_future_price_forecast(current_price=current_price)
 
-    display(HTML(forecast_summary_cards_html(pack)))
-    display(HTML(forecast_detail_table_html(pack)))
+    if display is not None and HTML is not None:
+        display(HTML(forecast_summary_cards_html(pack)))
+        display(HTML(forecast_detail_table_html(pack)))
 
-    print("=== Forecast Raw Data ===")
-    display(forecast_raw_dataframe(pack))
+        print("=== Forecast Raw Data ===")
+        display(forecast_raw_dataframe(pack))
+    else:
+        print("Forecast UI display is unavailable outside Notebook/Colab.")
+        print(forecast_raw_dataframe(pack))
 
     print("\n=== Inputs ===")
     print("Ticker              :", pack["ticker"])
