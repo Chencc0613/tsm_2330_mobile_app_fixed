@@ -2070,9 +2070,14 @@ def build_tsm_buy_plan(tsm_risk, holdings, lev_pack, res_macro):
 # 16) RENDER
 # ============================================================
 
-out = widgets.Output()
+# Original notebook renderer output. In Streamlit, ipywidgets may be unavailable,
+# so never create widgets at import time unless the package exists.
+out = widgets.Output() if widgets is not None else None
 
 def render_all(res_macro, tsm_risk, risk_pack, lev_pack, holdings, buy_plan):
+    if out is None or display is None or HTML is None:
+        return
+
     out.clear_output()
 
     with out:
@@ -2592,7 +2597,8 @@ def run_system():
         buy_plan=buy_plan,
     )
 
-    display(out)
+    if display is not None and out is not None:
+        display(out)
 
     result = {
         "macro": res_macro,

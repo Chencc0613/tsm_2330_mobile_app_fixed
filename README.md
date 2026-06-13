@@ -44,3 +44,7 @@ streamlit run app.py
 ## 2026-06-14 fix
 
 Removed the hard dependency on `pandas_datareader` during import. FRED data is optional; if unavailable, the app still runs with yfinance market-proxy macro data.
+
+
+## v4 fix
+- Guarded the original Colab `ipywidgets.Output()` renderer so Streamlit Cloud will not crash when importing `tsm_core.py`.
