@@ -21,55 +21,197 @@ st.markdown(
     """
     <style>
     :root {
-        --bg: #f7f7f4;
+        --bg: #f4f1ea;
         --card: #ffffff;
-        --ink: #141414;
-        --muted: #686868;
-        --line: #dedbd2;
-        --accent: #2f5d50;
+        --ink: #151515;
+        --muted: #4b5563;
+        --line: #d8d1c7;
+        --accent: #245c4a;
+        --accent-soft: #e7efe9;
         --warn: #a66a00;
         --danger: #9f2f2f;
     }
-    .stApp { background: var(--bg); }
-    h1, h2, h3 { letter-spacing: -0.03em; }
-    div[data-testid="stMetric"] {
-        background: var(--card);
-        border: 1px solid var(--line);
-        padding: 14px 14px 10px 14px;
-        border-radius: 18px;
-        box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+
+    /* App base */
+    .stApp {
+        background: var(--bg) !important;
+        color: var(--ink) !important;
     }
+
+    .stApp h1,
+    .stApp h2,
+    .stApp h3,
+    .stApp h4,
+    .stApp h5,
+    .stApp h6,
+    .stApp p,
+    .stApp label,
+    .stApp .stMarkdown,
+    .stApp [data-testid="stMarkdownContainer"],
+    .stApp [data-testid="stCaptionContainer"],
+    .stApp [data-testid="stText"],
+    .stApp [data-testid="stWidgetLabel"] {
+        color: var(--ink) !important;
+        opacity: 1 !important;
+    }
+
+    .stApp h1,
+    .stApp h2,
+    .stApp h3 {
+        letter-spacing: -0.03em;
+        font-weight: 850 !important;
+    }
+
+    .stApp small,
+    .stApp .small-muted,
+    .stApp [data-testid="stCaptionContainer"] {
+        color: var(--muted) !important;
+    }
+
+    /* Sidebar */
+    div[data-testid="stSidebar"] {
+        background: #eee9df !important;
+        color: var(--ink) !important;
+    }
+    div[data-testid="stSidebar"] * {
+        color: var(--ink) !important;
+        opacity: 1 !important;
+    }
+
+    /* Primary button: remove bright red */
+    div.stButton > button,
+    div.stButton > button[kind="primary"],
+    div.stButton > button[data-testid="baseButton-primary"] {
+        background: var(--accent) !important;
+        color: #ffffff !important;
+        border: 1px solid var(--accent) !important;
+        border-radius: 12px !important;
+        font-weight: 800 !important;
+    }
+    div.stButton > button:hover,
+    div.stButton > button[kind="primary"]:hover,
+    div.stButton > button[data-testid="baseButton-primary"]:hover {
+        background: #1b4639 !important;
+        border-color: #1b4639 !important;
+        color: #ffffff !important;
+    }
+
+    /* Metric cards */
+    div[data-testid="stMetric"] {
+        background: var(--card) !important;
+        border: 1px solid var(--line) !important;
+        padding: 14px 14px 10px 14px !important;
+        border-radius: 18px !important;
+        box-shadow: 0 1px 8px rgba(0,0,0,0.05) !important;
+        color: var(--ink) !important;
+    }
+    div[data-testid="stMetric"] * {
+        color: var(--ink) !important;
+        opacity: 1 !important;
+    }
+    div[data-testid="stMetricLabel"] p {
+        color: var(--muted) !important;
+        font-weight: 700 !important;
+    }
+    div[data-testid="stMetricValue"] {
+        color: var(--ink) !important;
+        font-weight: 850 !important;
+    }
+
+    /* Decision header */
     .decision-card {
-        background: #161616;
-        color: white;
+        background: #151515 !important;
+        color: #ffffff !important;
         border-radius: 22px;
         padding: 18px 18px;
         margin: 6px 0 16px 0;
-        border: 1px solid #2d2d2d;
+        border: 1px solid #2a2a2a;
+        box-shadow: 0 8px 26px rgba(0,0,0,0.12);
     }
-    .decision-title { font-size: 12px; color: #b9b9b9; font-weight: 800; letter-spacing: 0.08em; }
-    .decision-main { font-size: clamp(32px, 8vw, 56px); font-weight: 950; line-height: 1.0; margin-top: 8px; }
-    .pill { display:inline-block; padding: 6px 10px; border-radius: 999px; font-size: 13px; font-weight: 800; margin-right: 6px; }
-    .pill-buy { background: #2f5d50; color: white; }
-    .pill-hold { background: #606060; color: white; }
-    .pill-warn { background: #a66a00; color: white; }
-    .small-muted { color: #686868; font-size: 13px; line-height: 1.5; }
+    .decision-card * { color: #ffffff !important; opacity: 1 !important; }
+    .decision-title {
+        font-size: 12px;
+        color: #d9d9d9 !important;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+    }
+    .decision-main {
+        font-size: clamp(32px, 8vw, 56px);
+        font-weight: 950;
+        line-height: 1.0;
+        margin-top: 8px;
+    }
+    .pill {
+        display:inline-block;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 800;
+        margin-right: 6px;
+        color: #ffffff !important;
+    }
+    .pill-buy { background: var(--accent) !important; }
+    .pill-hold { background: #606060 !important; }
+    .pill-warn { background: var(--warn) !important; }
+
+    /* Notes */
     .block-note {
-        background: #ffffff;
-        border-left: 5px solid #2f5d50;
+        background: var(--card) !important;
+        color: var(--ink) !important;
+        border-left: 5px solid var(--accent) !important;
         border-radius: 14px;
-        border-top: 1px solid #dedbd2;
-        border-right: 1px solid #dedbd2;
-        border-bottom: 1px solid #dedbd2;
+        border-top: 1px solid var(--line);
+        border-right: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
         padding: 12px 14px;
         margin: 10px 0;
     }
-    div[data-testid="stSidebar"] { background: #efeee9; }
+    .block-note,
+    .block-note * {
+        color: var(--ink) !important;
+        opacity: 1 !important;
+    }
+    .small-muted {
+        color: var(--muted) !important;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    /* Tabs */
+    button[data-baseweb="tab"] p,
+    button[data-baseweb="tab"] {
+        color: var(--muted) !important;
+        font-weight: 800 !important;
+    }
+    button[data-baseweb="tab"][aria-selected="true"] p,
+    button[data-baseweb="tab"][aria-selected="true"] {
+        color: var(--accent) !important;
+    }
+    div[data-baseweb="tab-highlight"] {
+        background-color: var(--accent) !important;
+    }
+
+    /* Tables / dataframes */
+    [data-testid="stDataFrame"] {
+        color: var(--ink) !important;
+    }
+
+    /* Alert boxes */
+    div[data-testid="stAlert"] * {
+        color: var(--ink) !important;
+        opacity: 1 !important;
+    }
+
+    /* Mobile spacing */
+    @media (max-width: 768px) {
+        .block-container { padding-top: 1rem !important; }
+        .decision-card { padding: 16px 14px; }
+        .pill { margin-bottom: 6px; }
+    }
     </style>
     """,
     unsafe_allow_html=True,
 )
-
 
 # -----------------------------
 # Formatting helpers

@@ -1,6 +1,10 @@
-# TSM / 2330 Mobile Streamlit App — v5
+# TSM / 2330 Mobile Streamlit App — v6
 
-這版移除了 Colab / IPython import 的硬依賴，避免 Streamlit Cloud 出現 `ModuleNotFoundError: No module named 'IPython'`。
+這版只修配色與對比度：
+
+- 移除亮紅色主按鈕，改成深綠。
+- 強制修正標題、卡片、metric、tabs 在 Streamlit Cloud 上變白看不清的問題。
+- 保留原本程式邏輯，沒有改 BUY/HOLD 計算。
 
 ## Deploy
 
@@ -14,7 +18,5 @@
 - `tsm_core.py`：投資系統核心
 - `requirements.txt`：部署套件
 - `.streamlit/config.toml`：簡化配色
-
-## Note
 
 此 App 只提供 BUY / HOLD 與部位試算，不會自動下單。
